@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "incremental": true,
+    "jsx": "preserve",
+    "jsxFactory": "h",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "target": "ESNext"
+  },
+  "files": [
+    "index.tsx"
+  ]
+}

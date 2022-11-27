@@ -1,0 +1,11 @@
+node_modules/
+.git/
+.DS_Store
+coverage/
+dist/
+*.log
+package-lock.json
+npm-shrinkwrap.json
+
+markdown-to-jsx.js
+markdown-to-jsx.js.map

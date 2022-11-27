@@ -1,0 +1,89 @@
+{
+  "name": "@innei/markdown-to-jsx-vue3",
+  "homepage": "https://probablyup.github.io/markdown-to-jsx",
+  "license": "MIT",
+  "version": "7.1.3-vue.0",
+  "engines": {
+    "node": ">= 10"
+  },
+  "keywords": [
+    "markdown",
+    "markdown converter",
+    "jsx",
+    "html"
+  ],
+  "author": "Evan Jacobs <probablyup@gmail.com>",
+  "repository": "probablyup/markdown-to-jsx",
+  "bugs": "https://github.com/probablyup/markdown-to-jsx/issues",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "source": "index.tsx",
+  "unpkg": "./dist/index.umd.js",
+  "types": "dist/index.d.ts",
+  "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.7",
+    "@babel/plugin-transform-typescript": "^7.11.0",
+    "@size-limit/preset-small-lib": "^5.0.1",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^16.3.2",
+    "@types/styled-components": "^5.1.7",
+    "benchtable": "^0.1.0",
+    "cli-progress": "^3.8.2",
+    "codecov": "^3.1.0",
+    "esm": "^3.0.84",
+    "in-publish": "^2.0.0",
+    "jest": "^27.0.6",
+    "jest-serializer-html": "^7.0.0",
+    "markdown-it": "^11.0.0",
+    "microbundle": "^0.13.0",
+    "microtime": "^3.0.0",
+    "mkdirp": "^1.0.4",
+    "polished": "^3.0.3",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "simple-markdown": "^0.7.2",
+    "size-limit": "^5.0.1",
+    "theredoc": "^1.0.0",
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.1.3",
+    "unquote": "^1.1.0",
+    "vue": "3.2.45"
+  },
+  "scripts": {
+    "prepublish": "in-publish && npm run build && npm run release || not-in-publish",
+    "prebuild": "rimraf dist && mkdirp dist",
+    "build": "microbundle --tsconfig tsconfig.json -f cjs,umd index.cjs.tsx --name MarkdownToJSX --define process.env.NODE_ENV=production --globals vue=vue && microbundle --tsconfig tsconfig.json -f es,modern --name MarkdownToJSX --define process.env.NODE_ENV=production",
+    "release": "microbundle site.tsx -o docs -f iife --tsconfig tsconfig.site.json --define process.env.NODE_ENV=production --jsx h --external vue=vue,styled-components --globals vue=vue,styled-components=styled",
+    "dev": "microbundle watch site.tsx -o docs -f iife --tsconfig tsconfig.site.json --define process.env.NODE_ENV=development --no-compress --jsx h --external styled-components,vue --globals vue=vue,styled-components=styled",
+    "test": "jest --verbose",
+    "size": "size-limit",
+    "benchmark": "node -r esm benchmark.js"
+  },
+  "mangle": {
+    "regex": "^_"
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.js",
+      "limit": "5.5 kB"
+    }
+  ],
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "snapshotSerializers": [
+      "jest-serializer-html"
+    ]
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/markdown-to-jsx"
+  }
+}
