@@ -2,7 +2,7 @@
   "name": "@innei/markdown-to-jsx-vue3",
   "homepage": "https://probablyup.github.io/markdown-to-jsx",
   "license": "MIT",
-  "version": "7.1.3-vue.0",
+  "version": "7.2.0-vue.0",
   "engines": {
     "node": ">= 10"
   },
