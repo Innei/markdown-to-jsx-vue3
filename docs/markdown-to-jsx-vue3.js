@@ -1514,22 +1514,16 @@
   var Markdown = vue.defineComponent({
     props: {
       options: {
-        type: Object,
-        "default": function _default() {
-          return {};
-        }
+        type: Object
       },
       props: {
-        type: Object,
-        "default": function _default() {
-          return {};
-        }
+        type: Object
       }
     },
     setup: function setup(props, _ref) {
       var slots = _ref.slots;
       return function () {
-        return cloneElement(compiler(slots["default"] == null ? void 0 : slots["default"]()[0].children, props.options), props.props);
+        return cloneElement(compiler(slots["default"] == null ? void 0 : slots["default"]()[0].children, props.options || {}), props.props || {});
       };
     }
   });
