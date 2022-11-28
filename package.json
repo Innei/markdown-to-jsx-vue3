@@ -12,6 +12,12 @@
     "jsx",
     "html"
   ],
+  "bump": {
+    "before": [
+      "npm run build"
+    ],
+    "publish": true
+  },
   "author": "Evan Jacobs <probablyup@gmail.com>",
   "repository": "probablyup/markdown-to-jsx",
   "bugs": "https://github.com/probablyup/markdown-to-jsx/issues",
