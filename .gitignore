@@ -7,8 +7,8 @@ dist/
 package-lock.json
 npm-shrinkwrap.json
 
-markdown-to-jsx-vue3
+markdown-to-jsx-vue3.js
 
 markdown-to-jsx.js
 markdown-to-jsx.js.map
-markdown-to-jsx-vue3.map
+markdown-to-jsx-vue3.js.map
