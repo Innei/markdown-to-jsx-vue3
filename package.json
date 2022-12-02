@@ -1,5 +1,5 @@
 {
-  "name": "@innei/markdown-to-jsx-vue3",
+  "name": "markdown-to-jsx-vue3",
   "homepage": "https://probablyup.github.io/markdown-to-jsx",
   "license": "MIT",
   "version": "7.2.0-vue.2",
@@ -58,7 +58,7 @@
     "size-limit": "^5.0.1",
     "theredoc": "^1.0.0",
     "ts-jest": "^27.0.3",
-    "typescript": "4.8.0",
+    "typescript": "^4.8.1",
     "unquote": "^1.1.0",
     "vue": "3.2.45"
   },
