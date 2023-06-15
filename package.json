@@ -47,7 +47,7 @@
     "in-publish": "^2.0.1",
     "jest": "^27.0.6",
     "jest-serializer-html": "^7.1.0",
-    "markdown-it": "^11.0.0",
+    "markdown-it": "^12.0.0",
     "microbundle": "^0.13.3",
     "microtime": "^3.0.0",
     "mkdirp": "^1.0.4",
