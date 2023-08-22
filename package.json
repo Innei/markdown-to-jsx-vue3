@@ -37,7 +37,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@babel/plugin-transform-typescript": "^7.11.0",
     "@size-limit/preset-small-lib": "^5.0.5",
-    "@types/jest": "^29.5.3",
+    "@types/jest": "^29.5.4",
     "@types/node": "^16.18.41",
     "@types/styled-components": "^5.1.26",
     "benchtable": "^0.1.0",
