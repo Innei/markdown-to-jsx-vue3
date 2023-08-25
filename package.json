@@ -38,7 +38,7 @@
     "@babel/plugin-transform-typescript": "^7.11.0",
     "@size-limit/preset-small-lib": "^5.0.5",
     "@types/jest": "^29.5.4",
-    "@types/node": "^16.18.44",
+    "@types/node": "^16.18.46",
     "@types/styled-components": "^5.1.26",
     "benchtable": "^0.1.0",
     "cli-progress": "^3.8.2",
