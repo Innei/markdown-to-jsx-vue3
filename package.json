@@ -52,7 +52,7 @@
     "microtime": "^3.0.0",
     "mkdirp": "^1.0.4",
     "polished": "^3.7.2",
-    "prettier": "^3.0.2",
+    "prettier": "^3.0.3",
     "rimraf": "^3.0.2",
     "simple-markdown": "^0.7.3",
     "size-limit": "^5.0.5",
