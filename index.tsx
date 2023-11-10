@@ -10,6 +10,8 @@ import {
   PropType,
   VNode,
   RenderFunction,
+  DefineComponent,
+  Component,
 } from 'vue'
 /// <reference path="unquote.d.ts" />
 import unquote from 'unquote'
@@ -58,7 +60,7 @@ export type Rule<ParserOutput = ParserResult> = {
     source: string,
     state: State,
     prevCapturedString?: string
-  ) => RegExpMatchArray
+  ) => RegExpMatchArray | null
   order: Priority
   parse: Parser<ParserOutput>
   react?: (
@@ -139,21 +141,19 @@ export type Rules = {
 
 export type Override =
   | RequireAtLeastOne<{
-      component: VNode
+      component: Component
       props: Object
     }>
-  | VNode
+  | Component
 
 export type Overrides = {
   [tag in HTMLTags]?: Override
 } & {
   [customComponent: string]: Override
 }
-export type ExtendsRules = Partial<
-  {
-    [key in RuleName]: Partial<Rule>
-  }
->
+export type ExtendsRules = Partial<{
+  [key in RuleName]: Partial<Rule>
+}>
 
 export type Options = Partial<{
   /**
@@ -619,7 +619,7 @@ function normalizeAttributeKey(key) {
 }
 
 function attributeValueToJSXPropValue(
-  key: JSX.IntrinsicAttributes,
+  key: keyof HTMLElement | keyof HTMLAnchorElement,
   value: string
 ): any {
   if (key === 'style') {
@@ -1201,7 +1201,7 @@ export function compiler(markdown: string, options: Options = {}) {
       react(node, output, state) {
         return (
           <pre key={state.key}>
-            <code className={node.lang ? `lang-${node.lang}` : ''}>
+            <code class={node.lang ? `lang-${node.lang}` : ''}>
               {node.content}
             </code>
           </pre>
@@ -1285,7 +1285,7 @@ export function compiler(markdown: string, options: Options = {}) {
           <input
             checked={node.completed}
             key={state.key}
-            readOnly
+            readonly
             type="checkbox"
           />
         )

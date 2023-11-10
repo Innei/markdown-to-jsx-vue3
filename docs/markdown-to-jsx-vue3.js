@@ -1,43 +1,35 @@
 (function (vue) {
 
   function _extends() {
-    _extends = Object.assign || function (target) {
+    _extends = Object.assign ? Object.assign.bind() : function (target) {
       for (var i = 1; i < arguments.length; i++) {
         var source = arguments[i];
-
         for (var key in source) {
           if (Object.prototype.hasOwnProperty.call(source, key)) {
             target[key] = source[key];
           }
         }
       }
-
       return target;
     };
-
     return _extends.apply(this, arguments);
   }
 
   var reg = /[\'\"]/;
-
   var unquote = function unquote(str) {
     if (!str) {
       return '';
     }
-
     if (reg.test(str.charAt(0))) {
       str = str.substr(1);
     }
-
     if (reg.test(str.charAt(str.length - 1))) {
       str = str.substr(0, str.length - 1);
     }
-
     return str;
   };
 
   /** TODO: Drop for React 16? */
-
   var ATTRIBUTE_TO_JSX_PROP_MAP = {
     accesskey: 'accessKey',
     allowfullscreen: 'allowFullScreen',
@@ -123,10 +115,8 @@
    *                           ==================
    *                                   ↳ someBigNumber: "123456789123456789"
    */
-
   var ATTR_EXTRACTOR_R = /([-A-Z0-9_:]+)(?:\s*=\s*(?:(?:"((?:\\.|[^"])*)")|(?:'((?:\\.|[^'])*)')|(?:\{((?:\\.|{[^}]*?}|[^}])*)\})))?/gi;
   /** TODO: Write explainers for each of these */
-
   var AUTOLINK_MAILTO_CHECK_R = /mailto:/i;
   var BLOCK_END_R = /\n{2,}$/;
   var BLOCKQUOTE_R = /^( *>[^\n]+(\n[^\n]+)*\n*)+\n{2,}/;
@@ -166,14 +156,12 @@
    * 6. Capture excess newlines afterward
    *    \n*
    */
-
   var HTML_BLOCK_ELEMENT_R = /^ *(?!<[a-z][^ >/]* ?\/>)<([a-z][^ >/]*) ?([^>]*)\/{0}>\n?(\s*(?:<\1[^>]*?>[\s\S]*?<\/\1>|(?!<\1)[\s\S])*?)<\/\1>\n*/i;
   var HTML_CHAR_CODE_R = /&([a-z]+);/g;
   var HTML_COMMENT_R = /^<!--[\s\S]*?(?:-->)/;
   /**
    * borrowed from React 15(https://github.com/facebook/react/blob/894d20744cba99383ffd847dbd5b6e0800355a5c/src/renderers/dom/shared/HTMLDOMPropertyConfig.js)
    */
-
   var HTML_CUSTOM_ATTR_R = /^(data|aria|x)-[a-z_][a-z\d_.-]*$/;
   var HTML_SELF_CLOSING_ELEMENT_R = /^ *<([a-z][a-z0-9:]*)(?:\s+((?:<.*?>|[^>])*))?\/?>(?!<\/\1>)(\s*\n)?/i;
   var INTERPOLATION_R = /^\{.*\}$/;
@@ -204,24 +192,25 @@
   var TEXT_PLAIN_R = /^[\s\S]+?(?=[^0-9A-Z\s\u00c0-\uffff&;.()'"]|\d+\.|\n\n| {2,}\n|\w+:\S|$)/i;
   var TRIM_NEWLINES_AND_TRAILING_WHITESPACE_R = /(^\n+|\n+$|\s+$)/g;
   var HTML_LEFT_TRIM_AMOUNT_R = /^([ \t]*)/;
-  var UNESCAPE_URL_R = /\\([^0-9A-Z\s])/gi; // recognize a `*` `-`, `+`, `1.`, `2.`... list bullet
-
-  var LIST_BULLET = '(?:[*+-]|\\d+\\.)'; // recognize the start of a list item:
+  var UNESCAPE_URL_R = /\\([^0-9A-Z\s])/gi;
+  // recognize a `*` `-`, `+`, `1.`, `2.`... list bullet
+  var LIST_BULLET = '(?:[*+-]|\\d+\\.)';
+  // recognize the start of a list item:
   // leading space plus a bullet plus a space (`   * `)
-
   var LIST_ITEM_PREFIX = '( *)(' + LIST_BULLET + ') +';
-  var LIST_ITEM_PREFIX_R = new RegExp('^' + LIST_ITEM_PREFIX); // recognize an individual list item:
+  var LIST_ITEM_PREFIX_R = new RegExp('^' + LIST_ITEM_PREFIX);
+  // recognize an individual list item:
   //  * hi
   //    this is part of the same item
   //
   //    as is this, which is a new paragraph in the same item
   //
   //  * but this is not part of the same item
-
-  var LIST_ITEM_R = new RegExp(LIST_ITEM_PREFIX + '[^\\n]*(?:\\n' + '(?!\\1' + LIST_BULLET + ' )[^\\n]*)*(\\n|$)', 'gm'); // check whether a list item has paragraphs: if it does,
+  var LIST_ITEM_R = new RegExp(LIST_ITEM_PREFIX + '[^\\n]*(?:\\n' + '(?!\\1' + LIST_BULLET + ' )[^\\n]*)*(\\n|$)', 'gm');
+  // check whether a list item has paragraphs: if it does,
   // we leave the newlines at the end
-
-  var LIST_R = new RegExp('^( *)(' + LIST_BULLET + ') ' + '[\\s\\S]+?(?:\\n{2,}(?! )' + '(?!\\1' + LIST_BULLET + ' (?!' + LIST_BULLET + ' ))\\n*' + // the \\s*$ here is so that we can parse the inside of nested
+  var LIST_R = new RegExp('^( *)(' + LIST_BULLET + ') ' + '[\\s\\S]+?(?:\\n{2,}(?! )' + '(?!\\1' + LIST_BULLET + ' (?!' + LIST_BULLET + ' ))\\n*' +
+  // the \\s*$ here is so that we can parse the inside of nested
   // lists, where our content might end before we receive two `\n`s
   '|\\s*\\n*$)');
   var LINK_INSIDE = '(?:\\[[^\\]]*\\]|[^\\[\\]]|\\](?=[^\\[]*\\]))*';
@@ -229,19 +218,16 @@
   var LINK_R = new RegExp('^\\[(' + LINK_INSIDE + ')\\]\\(' + LINK_HREF_AND_TITLE + '\\)');
   var IMAGE_R = new RegExp('^!\\[(' + LINK_INSIDE + ')\\]\\(' + LINK_HREF_AND_TITLE + '\\)');
   var BLOCK_SYNTAXES = [BLOCKQUOTE_R, CODE_BLOCK_R, CODE_BLOCK_FENCED_R, HEADING_R, HEADING_SETEXT_R, HTML_BLOCK_ELEMENT_R, HTML_COMMENT_R, HTML_SELF_CLOSING_ELEMENT_R, LIST_ITEM_R, LIST_R, NP_TABLE_R, PARAGRAPH_R];
-
   function containsBlockSyntax(input) {
     return BLOCK_SYNTAXES.some(function (r) {
       return r.test(input);
     });
-  } // based on https://stackoverflow.com/a/18123682/1141611
+  }
+  // based on https://stackoverflow.com/a/18123682/1141611
   // not complete, but probably good enough
-
-
   function slugify(str) {
     return str.replace(/[ÀÁÂÃÄÅàáâãäåæÆ]/g, 'a').replace(/[çÇ]/g, 'c').replace(/[ðÐ]/g, 'd').replace(/[ÈÉÊËéèêë]/g, 'e').replace(/[ÏïÎîÍíÌì]/g, 'i').replace(/[Ññ]/g, 'n').replace(/[øØœŒÕõÔôÓóÒò]/g, 'o').replace(/[ÜüÛûÚúÙù]/g, 'u').replace(/[ŸÿÝý]/g, 'y').replace(/[^a-z0-9- ]/gi, '').replace(/ /gi, '-').toLowerCase();
   }
-
   function parseTableAlignCapture(alignCapture) {
     if (TABLE_RIGHT_ALIGN.test(alignCapture)) {
       return 'right';
@@ -250,10 +236,8 @@
     } else if (TABLE_LEFT_ALIGN.test(alignCapture)) {
       return 'left';
     }
-
     return null;
   }
-
   function parseTableRow(source, parse, state) {
     var prevInTable = state.inTable;
     state.inTable = true;
@@ -271,27 +255,21 @@
         if (node.type === 'text' && (tableRow[i + 1] == null || tableRow[i + 1].type === 'tableSeparator')) {
           node.content = node.content.replace(TABLE_CELL_END_TRIM, '');
         }
-
         cells[cells.length - 1].push(node);
       }
     });
     return cells;
   }
-
-  function parseTableAlign(source
-  /*, parse, state*/
-  ) {
+  function parseTableAlign(source /*, parse, state*/) {
     var alignText = source.replace(TABLE_TRIM_PIPES, '').split('|');
     return alignText.map(parseTableAlignCapture);
   }
-
   function parseTableCells(source, parse, state) {
     var rowsText = source.trim().split('\n');
     return rowsText.map(function (rowText) {
       return parseTableRow(rowText, parse, state);
     });
   }
-
   function parseTable(capture, parse, state) {
     state.inline = true;
     var header = parseTableRow(capture[1], parse, state);
@@ -305,37 +283,31 @@
       type: 'table'
     };
   }
-
   function getTableStyle(node, colIndex) {
     return node.align[colIndex] == null ? {} : {
       textAlign: node.align[colIndex]
     };
   }
   /** TODO: remove for react 16 */
-
-
   function normalizeAttributeKey(key) {
     var hyphenIndex = key.indexOf('-');
-
     if (hyphenIndex !== -1 && key.match(HTML_CUSTOM_ATTR_R) === null) {
       key = key.replace(CAPTURE_LETTER_AFTER_HYPHEN, function (_, letter) {
         return letter.toUpperCase();
       });
     }
-
     return key;
   }
-
   function attributeValueToJSXPropValue(key, value) {
     if (key === 'style') {
       return value.split(/;\s?/).reduce(function (styles, kvPair) {
-        var key = kvPair.slice(0, kvPair.indexOf(':')); // snake-case to camelCase
+        var key = kvPair.slice(0, kvPair.indexOf(':'));
+        // snake-case to camelCase
         // also handles PascalCasing vendor prefixes
-
         var camelCasedKey = key.replace(/(-[a-z])/g, function (substr) {
           return substr[1].toUpperCase();
-        }); // key.length + 1 to skip over the colon
-
+        });
+        // key.length + 1 to skip over the colon
         styles[camelCasedKey] = kvPair.slice(key.length + 1).trim();
         return styles;
       }, {});
@@ -345,16 +317,13 @@
       // return as a string and let the consumer decide what to do with it
       value = value.slice(1, value.length - 1);
     }
-
     if (value === 'true') {
       return true;
     } else if (value === 'false') {
       return false;
     }
-
     return value;
   }
-
   function normalizeWhitespace(source) {
     return source.replace(CR_NEWLINE_R, '\n').replace(FORMFEED_R, '').replace(TAB_R, '    ');
   }
@@ -377,83 +346,69 @@
    *     some nesting is. For an example use-case, see passage-ref
    *     parsing in src/widgets/passage/passage-markdown.jsx
    */
-
-
   function parserFor(rules) {
     // Sorts rules in order of increasing order, then
     // ascending rule name in case of ties.
     var ruleList = Object.keys(rules);
     /* istanbul ignore next */
-
     {
       ruleList.forEach(function (type) {
         var order = rules[type].order;
-
         if ((typeof order !== 'number' || !isFinite(order))) {
           console.warn('markdown-to-jsx: Invalid order for rule `' + type + '`: ' + order);
         }
       });
     }
-
     ruleList.sort(function (typeA, typeB) {
       var orderA = rules[typeA].order;
-      var orderB = rules[typeB].order; // First sort based on increasing order
-
+      var orderB = rules[typeB].order;
+      // First sort based on increasing order
       if (orderA !== orderB) {
-        return orderA - orderB; // Then based on increasing unicode lexicographic ordering
+        return orderA - orderB;
+        // Then based on increasing unicode lexicographic ordering
       } else if (typeA < typeB) {
         return -1;
       }
-
       return 1;
     });
-
     function nestedParse(source, state) {
-      var result = []; // We store the previous capture so that match functions can
+      var result = [];
+      // We store the previous capture so that match functions can
       // use some limited amount of lookbehind. Lists use this to
       // ensure they don't match arbitrary '- ' or '* ' in inline
       // text (see the list rule for more information).
-
       var prevCapture = '';
-
       while (source) {
         var i = 0;
-
         while (i < ruleList.length) {
           var ruleType = ruleList[i];
           var rule = rules[ruleType];
           var capture = rule.match(source, state, prevCapture);
-
           if (capture) {
             var currCaptureString = capture[0];
             source = source.substring(currCaptureString.length);
-            var parsed = rule.parse(capture, nestedParse, state); // We also let rules override the default type of
+            var parsed = rule.parse(capture, nestedParse, state);
+            // We also let rules override the default type of
             // their parsed node if they would like to, so that
             // there can be a single output function for all links,
             // even if there are several rules to parse them.
-
             if (parsed.type == null) {
               parsed.type = ruleType;
             }
-
             result.push(parsed);
             prevCapture = currCaptureString;
             break;
           }
-
           i++;
         }
       }
-
       return result;
     }
-
     return function outerParse(source, state) {
       return nestedParse(normalizeWhitespace(source), state);
     };
-  } // Creates a match function for an inline scoped or simple element from a regex
-
-
+  }
+  // Creates a match function for an inline scoped or simple element from a regex
   function inlineRegex(regex) {
     return function match(source, state) {
       if (state.inline) {
@@ -462,8 +417,8 @@
         return null;
       }
     };
-  } // basically any inline element except links
-
+  }
+  // basically any inline element except links
   function simpleInlineRegex(regex) {
     return function match(source, state) {
       if (state.inline || state.simple) {
@@ -472,8 +427,8 @@
         return null;
       }
     };
-  } // Creates a match function for a block scoped element from a regex
-
+  }
+  // Creates a match function for a block scoped element from a regex
   function blockRegex(regex) {
     return function match(source, state) {
       if (state.inline || state.simple) {
@@ -482,93 +437,73 @@
         return regex.exec(source);
       }
     };
-  } // Creates a match function from a regex, ignoring block/inline scope
-
+  }
+  // Creates a match function from a regex, ignoring block/inline scope
   function anyScopeRegex(regex) {
-    return function match(source
-    /*, state*/
-    ) {
+    return function match(source /*, state*/) {
       return regex.exec(source);
     };
   }
-
   function reactFor(outputFunc) {
     return function nestedReactOutput(ast, state) {
       if (state === void 0) {
         state = {};
       }
-
       if (Array.isArray(ast)) {
         var oldKey = state.key;
-        var result = []; // map nestedOutput over the ast, except group any text
+        var result = [];
+        // map nestedOutput over the ast, except group any text
         // nodes together into a single string output.
-
         var lastWasString = false;
-
         for (var i = 0; i < ast.length; i++) {
           state.key = i;
           var nodeOut = nestedReactOutput(ast[i], state);
           var isString = typeof nodeOut === 'string';
-
           if (isString && lastWasString) {
             result[result.length - 1] += nodeOut;
           } else {
             result.push(nodeOut);
           }
-
           lastWasString = isString;
         }
-
         state.key = oldKey;
         return result;
       }
-
       return outputFunc(ast, nestedReactOutput, state);
     };
   }
-
   function sanitizeUrl(url) {
     try {
       var decoded = decodeURIComponent(url).replace(/[^A-Za-z0-9/:]/g, '');
-
       if (decoded.match(/^\s*(javascript|vbscript|data):/i)) {
         if ("development" !== 'production') {
           console.warn('Anchor URL contains an unsafe JavaScript/VBScript/data expression, it will not be rendered.', decoded);
         }
-
         return null;
       }
     } catch (e) {
       {
         console.warn('Anchor URL could not be decoded due to malformed syntax or characters, it will not be rendered.', url);
-      } // decodeURIComponent sometimes throws a URIError
+      }
+      // decodeURIComponent sometimes throws a URIError
       // See `decodeURIComponent('a%AFc');`
       // http://stackoverflow.com/questions/9064536/javascript-decodeuricomponent-malformed-uri-exception
-
-
       return null;
     }
-
     return url;
   }
-
   function unescapeUrl(rawUrlString) {
     return rawUrlString.replace(UNESCAPE_URL_R, '$1');
   }
-
   var cloneElement = function cloneElement(VNode, props) {
     var _VNode$data;
-
     if (props === void 0) {
       props = {};
     }
-
     var attrs = _extends({}, (_VNode$data = VNode.data) == null ? void 0 : _VNode$data.attrs, props);
-
     var data = _extends({}, VNode.data, {
       attrs: attrs
     });
-
     return _extends({}, VNode, {
       data: data
     });
@@ -576,8 +511,6 @@
   /**
    * Everything inline, including links.
    */
-
-
   function parseInline(parse, content, state) {
     var isCurrentlyInline = state.inline || false;
     var isCurrentlySimple = state.simple || false;
@@ -591,7 +524,6 @@
   /**
    * Anything inline that isn't a link.
    */
-
   function parseSimpleInline(parse, content, state) {
     var isCurrentlyInline = state.inline || false;
     var isCurrentlySimple = state.simple || false;
@@ -611,45 +543,35 @@
       content: parseInline(parse, capture[1], state)
     };
   };
-
   function captureNothing() {
     return {};
   }
-
   function renderNothing() {
     return null;
   }
-
   function ruleOutput(rules) {
     return function nestedRuleOutput(ast, outputFunc, state) {
       return rules[ast.type].react(ast, outputFunc, state);
     };
   }
-
   function cx() {
     return [].slice.call(arguments).filter(Boolean).join(' ');
   }
-
   function get(src, path, fb) {
     var ptr = src;
     var frags = path.split('.');
-
     while (frags.length) {
       ptr = ptr[frags[0]];
       if (ptr === undefined) break;else frags.shift();
     }
-
     return ptr || fb;
   }
-
   function getTag(tag, overrides) {
     var override = get(overrides, tag);
     if (!override) return tag;
     return typeof override === 'function' || typeof override === 'object' && 'render' in override ? override : get(overrides, tag + ".component", tag);
   }
-
   var Priority;
-
   (function (Priority) {
     /**
      * anything that must scan the tree before everything else
@@ -658,49 +580,41 @@
     /**
      * scans for block-level constructs
      */
-
     Priority[Priority["HIGH"] = 1] = "HIGH";
     /**
      * inline w/ more priority than other inline
      */
-
     Priority[Priority["MED"] = 2] = "MED";
     /**
      * inline elements
      */
-
     Priority[Priority["LOW"] = 3] = "LOW";
     /**
      * bare text and stuff that is considered leftovers
      */
-
     Priority[Priority["MIN"] = 4] = "MIN";
   })(Priority || (Priority = {}));
-
   function compiler(markdown, options) {
     var _options$allowedTypes, _options$disabledType;
-
     if (options === void 0) {
       options = {};
     }
-
     options.overrides = options.overrides || {};
     options.slugify = options.slugify || slugify;
     options.namedCodesToUnicode = options.namedCodesToUnicode ? _extends({}, namedCodesToUnicode, options.namedCodesToUnicode) : namedCodesToUnicode;
     options.additionalParserRules = options.additionalParserRules || {};
-    var createElementFn = options.createElement || vue.h; // eslint-disable-next-line no-unused-vars
-
-    function h( // locally we always will render a known string tag
+    var createElementFn = options.createElement || vue.h;
+    // eslint-disable-next-line no-unused-vars
+    function h(
+    // locally we always will render a known string tag
     tag, props) {
       var overrideProps = get(options.overrides, tag + ".props", {});
       return createElementFn.apply(void 0, [getTag(tag, options.overrides), _extends({}, props, overrideProps, {
         "class": cx(props == null ? void 0 : props.className, props == null ? void 0 : props["class"], overrideProps == null ? void 0 : overrideProps["class"], overrideProps.className) || undefined
       })].concat([].slice.call(arguments, 2)));
     }
-
     function compile(input) {
       var _inline = false;
-
       if (options.forceInline) {
         _inline = true;
       } else if (!options.forceBlock) {
@@ -710,23 +624,19 @@
          */
         _inline = SHOULD_RENDER_AS_BLOCK_R.test(input) === false;
       }
-
       var arr = emitter(parser(_inline ? input : input.replace(TRIM_NEWLINES_AND_TRAILING_WHITESPACE_R, '') + "\n\n", {
         inline: _inline
       }));
-
       if (options.wrapper === null) {
         return arr;
       }
-
       var wrapper = options.wrapper || (_inline ? 'span' : 'div');
       var jsx;
-
       if (arr.length > 1 || options.forceWrapper) {
         jsx = arr;
       } else if (arr.length === 1) {
-        jsx = arr[0]; // TODO: remove this for React 16
-
+        jsx = arr[0];
+        // TODO: remove this for React 16
         if (typeof jsx === 'string') {
           return h("span", {
             key: "outer"
@@ -738,23 +648,19 @@
         // TODO: return null for React 16
         jsx = null;
       }
-
       return h(wrapper, {
         key: 'outer'
       }, jsx);
     }
-
     function attrStringToMap(str) {
       var attributes = str.match(ATTR_EXTRACTOR_R);
       return attributes ? attributes.reduce(function (map, raw, index) {
         var delimiterIdx = raw.indexOf('=');
-
         if (delimiterIdx !== -1) {
           var key = normalizeAttributeKey(raw.slice(0, delimiterIdx)).trim();
           var value = unquote(raw.slice(delimiterIdx + 1).trim());
           var mappedKey = ATTRIBUTE_TO_JSX_PROP_MAP[key] || key;
           var normalizedValue = map[mappedKey] = attributeValueToJSXPropValue(key, value);
-
           if (typeof normalizedValue === 'string' && (HTML_BLOCK_ELEMENT_R.test(normalizedValue) || HTML_SELF_CLOSING_ELEMENT_R.test(normalizedValue))) {
             map[mappedKey] = cloneElement(compile(normalizedValue.trim()), {
               key: index
@@ -763,23 +669,18 @@
         } else if (raw !== 'style') {
           map[ATTRIBUTE_TO_JSX_PROP_MAP[raw] || raw] = true;
         }
-
         return map;
       }, {}) : undefined;
     }
     /* istanbul ignore next */
-
-
     {
       if (typeof markdown !== 'string') {
         throw new Error("markdown-to-jsx: the first argument must be\n                             a string");
       }
-
       if (Object.prototype.toString.call(options.overrides) !== '[object Object]') {
         throw new Error("markdown-to-jsx: options.overrides (second argument property) must be\n                             undefined or an object literal with shape:\n                             {\n                                htmltagname: {\n                                    component: string|ReactComponent(optional),\n                                    props: object(optional)\n                                }\n                             }");
       }
     }
-
     var footnotes = [];
     var footnoteMap = new Map();
     var refs = {};
@@ -787,7 +688,6 @@
      * each rule's react() output function goes through our custom h() JSX pragma;
      * this allows the override functionality to be automatically applied
      */
-
     var rules = _extends({
       blockQuote: {
         match: blockRegex(BLOCKQUOTE_R),
@@ -826,9 +726,7 @@
       codeBlock: {
         match: blockRegex(CODE_BLOCK_R),
         order: Priority.MAX,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           return {
             content: capture[0].replace(/^ {4}/gm, '').replace(/\n+$/, ''),
             lang: undefined
@@ -838,16 +736,14 @@
           return h("pre", {
             key: state.key
           }, h("code", {
-            className: node.lang ? "lang-" + node.lang : ''
+            "class": node.lang ? "lang-" + node.lang : ''
           }, node.content));
         }
       },
       codeFenced: {
         match: blockRegex(CODE_BLOCK_FENCED_R),
         order: Priority.MAX,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           return {
             content: capture[3],
             lang: capture[2] || undefined,
@@ -858,9 +754,7 @@
       codeInline: {
         match: simpleInlineRegex(CODE_INLINE_R),
         order: Priority.LOW,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           return {
             content: capture[2]
           };
@@ -871,16 +765,13 @@
           }, node.content);
         }
       },
-
       /**
        * footnotes are emitted at the end of compilation in a special <footer> block
        */
       footnote: {
         match: blockRegex(FOOTNOTE_R),
         order: Priority.MAX,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           var obj = {
             footnote: capture[2],
             identifier: capture[1]
@@ -894,9 +785,7 @@
       footnoteReference: {
         match: inlineRegex(FOOTNOTE_REFERENCE_R),
         order: Priority.HIGH,
-        parse: function parse(capture
-        /*, parse*/
-        ) {
+        parse: function parse(capture /*, parse*/) {
           return {
             content: capture[1],
             target: "#" + options.slugify(capture[1]),
@@ -915,9 +804,7 @@
       gfmTask: {
         match: inlineRegex(GFM_TASK_R),
         order: Priority.HIGH,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           return {
             completed: capture[1].toLowerCase() === 'x'
           };
@@ -926,7 +813,7 @@
           return h("input", {
             checked: node.completed,
             key: state.key,
-            readOnly: true,
+            readonly: true,
             type: "checkbox"
           });
         }
@@ -943,7 +830,8 @@
         },
         react: function react(node, output, state) {
           node.tag = "h" + node.level;
-          return (// @ts-ignore
+          return (
+            // @ts-ignore
             h(node.tag, {
               id: node.id,
               key: state.key
@@ -973,9 +861,7 @@
       image: {
         match: simpleInlineRegex(IMAGE_R),
         order: Priority.HIGH,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           return {
             alt: capture[1],
             target: unescapeUrl(capture[2]),
@@ -1013,9 +899,7 @@
       linkAngleBraceStyleDetector: {
         match: inlineRegex(LINK_AUTOLINK_R),
         order: Priority.MAX,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           return {
             content: [{
               content: capture[1],
@@ -1031,13 +915,10 @@
           if (state.inAnchor) {
             return null;
           }
-
           return inlineRegex(LINK_AUTOLINK_BARE_URL_R)(source, state);
         },
         order: Priority.MAX,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           return {
             content: [{
               content: capture[1],
@@ -1052,16 +933,13 @@
       linkMailtoDetector: {
         match: inlineRegex(LINK_AUTOLINK_MAILTO_R),
         order: Priority.MAX,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           var address = capture[1];
-          var target = capture[1]; // Check for a `mailto:` already existing in the link:
-
+          var target = capture[1];
+          // Check for a `mailto:` already existing in the link:
           if (!AUTOLINK_MAILTO_CHECK_R.test(target)) {
             target = 'mailto:' + target;
           }
-
           return {
             content: [{
               content: address.replace('mailto:', ''),
@@ -1084,7 +962,6 @@
           // nested lists inside this inline scope.
           var isStartOfLine = LIST_LOOKBEHIND_R.exec(prevCapture);
           var isListBlock = state.list || !state.inline;
-
           if (isStartOfLine && isListBlock) {
             source = isStartOfLine[1] + source;
             return LIST_R.exec(source);
@@ -1097,47 +974,49 @@
           var bullet = capture[2];
           var ordered = bullet.length > 1;
           var start = ordered ? +bullet : undefined;
-          var items = capture[0] // recognize the end of a paragraph block inside a list item:
+          var items = capture[0]
+          // recognize the end of a paragraph block inside a list item:
           // two or more newlines at end end of the item
           .replace(BLOCK_END_R, '\n').match(LIST_ITEM_R);
           var lastItemWasAParagraph = false;
           var itemContent = items.map(function (item, i) {
             // We need to see how far indented the item is:
-            var space = LIST_ITEM_PREFIX_R.exec(item)[0].length; // And then we construct a regex to "unindent" the subsequent
+            var space = LIST_ITEM_PREFIX_R.exec(item)[0].length;
+            // And then we construct a regex to "unindent" the subsequent
             // lines of the items by that amount:
-
-            var spaceRegex = new RegExp('^ {1,' + space + '}', 'gm'); // Before processing the item, we need a couple things
-
-            var content = item // remove indents on trailing lines:
-            .replace(spaceRegex, '') // remove the bullet:
-            .replace(LIST_ITEM_PREFIX_R, ''); // Handling "loose" lists, like:
+            var spaceRegex = new RegExp('^ {1,' + space + '}', 'gm');
+            // Before processing the item, we need a couple things
+            var content = item
+            // remove indents on trailing lines:
+            .replace(spaceRegex, '')
+            // remove the bullet:
+            .replace(LIST_ITEM_PREFIX_R, '');
+            // Handling "loose" lists, like:
             //
             //  * this is wrapped in a paragraph
             //
             //  * as is this
             //
             //  * as is this
-
             var isLastItem = i === items.length - 1;
-            var containsBlocks = content.indexOf('\n\n') !== -1; // Any element in a list is a block if it contains multiple
+            var containsBlocks = content.indexOf('\n\n') !== -1;
+            // Any element in a list is a block if it contains multiple
             // newlines. The last element in the list can also be a block
             // if the previous item in the list was a block (this is
             // because non-last items in the list can end with \n\n, but
             // the last item can't, so we just "inherit" this property
             // from our previous element).
-
             var thisItemIsAParagraph = containsBlocks || isLastItem && lastItemWasAParagraph;
-            lastItemWasAParagraph = thisItemIsAParagraph; // backup our state for restoration afterwards. We're going to
+            lastItemWasAParagraph = thisItemIsAParagraph;
+            // backup our state for restoration afterwards. We're going to
             // want to set state._list to true, and state._inline depending
             // on our list's looseness.
-
             var oldStateInline = state.inline;
             var oldStateList = state.list;
-            state.list = true; // Parse inline if we're in a tight list, or block if we're in
+            state.list = true;
+            // Parse inline if we're in a tight list, or block if we're in
             // a loose list.
-
             var adjustedContent;
-
             if (thisItemIsAParagraph) {
               state.inline = false;
               adjustedContent = content.replace(LIST_ITEM_END_R, '\n\n');
@@ -1145,10 +1024,8 @@
               state.inline = true;
               adjustedContent = content.replace(LIST_ITEM_END_R, '');
             }
-
-            var result = _parse5(adjustedContent, state); // Restore our state before returning
-
-
+            var result = _parse5(adjustedContent, state);
+            // Restore our state before returning
             state.inline = oldStateInline;
             state.list = oldStateList;
             return result;
@@ -1175,11 +1052,9 @@
         match: blockRegex(CONSECUTIVE_NEWLINE_R),
         order: Priority.LOW,
         parse: captureNothing,
-        react: function react()
-        /*node, output, state*/
-        {
+        react: function react() {
           return '\n';
-        }
+        } /*node, output, state*/
       },
       paragraph: {
         match: blockRegex(PARAGRAPH_R),
@@ -1194,9 +1069,7 @@
       ref: {
         match: inlineRegex(REFERENCE_IMAGE_OR_LINK),
         order: Priority.MAX,
-        parse: function parse(capture
-        /*, parse*/
-        ) {
+        parse: function parse(capture /*, parse*/) {
           refs[capture[1]] = {
             target: capture[2],
             title: capture[4]
@@ -1272,7 +1145,6 @@
           if (!state.inTable) {
             return null;
           }
-
           return TABLE_SEPARATOR_R.exec(source);
         },
         order: Priority.HIGH,
@@ -1293,19 +1165,16 @@
         // is easy to extend without needing to modify this regex
         match: anyScopeRegex(TEXT_PLAIN_R),
         order: Priority.MIN,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           return {
-            content: capture[0] // nbsp -> unicode equivalent for named chars
+            content: capture[0]
+            // nbsp -> unicode equivalent for named chars
             .replace(HTML_CHAR_CODE_R, function (full, inner) {
               return options.namedCodesToUnicode[inner] ? options.namedCodesToUnicode[inner] : full;
             })
           };
         },
-        react: function react(node
-        /*, output, state*/
-        ) {
+        react: function react(node /*, output, state*/) {
           return node.content;
         }
       },
@@ -1348,9 +1217,7 @@
         // regardless of how this grammar is extended.
         match: simpleInlineRegex(TEXT_ESCAPED_R),
         order: Priority.HIGH,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           return {
             content: capture[1],
             type: 'text'
@@ -1367,7 +1234,8 @@
           }, output(node.content, state));
         }
       }
-    }, options.additionalParserRules); // Object.keys(rules).forEach(key => {
+    }, options.additionalParserRules);
+    // Object.keys(rules).forEach(key => {
     //     let { match, parse } = rules[key];
     //     rules[key]._match = (...args) => {
     //         const start = performance.now();
@@ -1391,8 +1259,6 @@
     //         return result;
     //     };
     // });
-
-
     if ((_options$allowedTypes = options.allowedTypes) != null && _options$allowedTypes.length) {
       Object.keys(rules).forEach(function (key) {
         if (!options.allowedTypes.includes(key)) {
@@ -1404,7 +1270,6 @@
         delete rules[type];
       });
     }
-
     if (options.disableParsingRawHTML !== true) {
       rules.htmlBlock = {
         /**
@@ -1414,10 +1279,8 @@
         order: Priority.HIGH,
         parse: function parse(capture, _parse9, state) {
           var _options$doNotProcess;
-
           var _capture$3$match = capture[3].match(HTML_LEFT_TRIM_AMOUNT_R),
-              whitespace = _capture$3$match[1];
-
+            whitespace = _capture$3$match[1];
           var trimmer = new RegExp("^" + whitespace, 'gm');
           var trimmed = capture[3].replace(trimmer, '');
           var parseFunc = containsBlockSyntax(trimmed) ? parseBlock : parseInline;
@@ -1428,7 +1291,6 @@
            * if another html block is detected within, parse as block,
            * otherwise parse as inline to pick up any further markdown
            */
-
           var content = noInnerParse ? capture[3] : parseFunc(_parse9, trimmed, state);
           state.inAnchor = false;
           return {
@@ -1439,7 +1301,8 @@
           };
         },
         react: function react(node, output, state) {
-          return (// @ts-ignore
+          return (
+            // @ts-ignore
             h(node.tag, _extends({
               key: state.key
             }, node.attrs), node.noInnerParse ? node.content : output(node.content, state))
@@ -1452,9 +1315,7 @@
          */
         match: anyScopeRegex(HTML_SELF_CLOSING_ELEMENT_R),
         order: Priority.HIGH,
-        parse: function parse(capture
-        /*, parse, state*/
-        ) {
+        parse: function parse(capture /*, parse, state*/) {
           return {
             attrs: attrStringToMap(capture[2] || ''),
             tag: capture[1]
@@ -1466,27 +1327,21 @@
           }));
         }
       };
-    } // merge extends rule
-
-
+    }
+    // merge extends rule
     var extendsRules = options.extendsRules;
-
     if (extendsRules) {
       for (var key in extendsRules) {
         var originRule = rules[key];
-
         if (!originRule) {
           continue;
         }
-
         Object.assign(rules[key], _extends({}, extendsRules[key]));
       }
     }
-
     var parser = parserFor(rules);
     var emitter = reactFor(ruleOutput(rules));
     var jsx = compile(markdown);
-
     if (footnotes.length) {
       var Footer = h("footer", {
         key: "footer"
@@ -1498,19 +1353,16 @@
           inline: true
         })));
       }));
-
       if (Array.isArray(jsx)) {
         jsx.push(Footer);
       } else jsx.props.children.push(Footer);
     }
-
     return jsx;
   }
   /**
    * A simple HOC for easy React use. Feed the markdown content as a direct child
    * and the rest is taken care of automatically.
    */
-
   var Markdown = vue.defineComponent({
     props: {
       options: {
@@ -1537,18 +1389,33 @@
       };
     }
   });
+  //  ==Mark==
+  var MarkRule = {
+    match: simpleInlineRegex(/^==((?:\[.*?\]|<.*?>(?:.*?<.*?>)?|`.*?`|.)*?)==/),
+    order: Priority.LOW,
+    parse: parseCaptureInline,
+    react: function react(node, output, state) {
+      return vue.h('mark', {
+        "class": 'rounded-md bg-always-yellow-400 bg-opacity-80 px-1 text-black'
+      }, output(node.content, state));
+    }
+  };
   var options = {
     overrides: {
       MyComponent: {
         component: MyComponent
       }
+    },
+    additionalParserRules: {
+      mark: MarkRule
     }
   };
-  var content = document.getElementById('sample-content').textContent.trim(); // @ts-ignore
-
+  var content = document.getElementById('sample-content').textContent.trim();
+  // @ts-ignore
   vue.createApp(vue.h(Markdown, {
     options: options
   }, content)).mount('#root');
+  ///
 
-}(vue));
+})(vue);
 //# sourceMappingURL=markdown-to-jsx-vue3.js.map
