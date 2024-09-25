@@ -1565,10 +1565,10 @@
   dependencies:
     undici-types "~6.11.1"
 
-"@types/node@^16.18.109":
-  version "16.18.109"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.109.tgz#3d2c2ac102b3e8707f2512bb9609c00b2566f5f5"
-  integrity sha512-PxPCTJDDwBrigapKYIRHegNOMfKTeQUkZMJt+mkEwHf2rskRylueIqaHyAHfcpmFIFi7wq7f/X8Se/5hIVREvg==
+"@types/node@^16.18.110":
+  version "16.18.110"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.110.tgz#83ecb477d8305a1a6d90416df736c984172b1ab7"
+  integrity sha512-hFlWPrNn1S7/Dxd2xZE0knhRZSe9SbtGJPVezusCtlFO8FN53xxw52A1ex+evLh31ltkXCc71NE5dx4Z3W7uow==
 
 "@types/parse-json@^4.0.0":
   version "4.0.2"
