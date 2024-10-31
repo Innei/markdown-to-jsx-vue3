@@ -1704,10 +1704,10 @@
   dependencies:
     undici-types "~6.11.1"
 
-"@types/node@^16.18.116":
-  version "16.18.116"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.116.tgz#138a0ce907c9f308d43f89902a9ef79fbcbc5e5c"
-  integrity sha512-mLigUvhoaADRewggiby+XfAAFOUOMCm/SwL5DAJ+CMUGjSLIGMsJVN7BOKftuQSHGjUmS/W7hVht8fcNbi/MRA==
+"@types/node@^16.18.118":
+  version "16.18.118"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.118.tgz#ec00e43ce642f38b2b9a87f4842cbd6f551b1e25"
+  integrity sha512-YgPbVGrf+mL4Qp8KTcd18OXfIsm1QYwHkldmWTNIR8aZH2EYSPNyLFFZHEXZIGYvYrwnW++xGoWyt4w279QDrQ==
 
 "@types/parse-json@^4.0.0":
   version "4.0.2"
